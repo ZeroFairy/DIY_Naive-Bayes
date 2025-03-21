@@ -17,10 +17,17 @@ public class Main {
         CalcBelong calc = new CalcBelong(filename);
 
         Map<String, String> input = new HashMap<String, String>();
-        input.put("age", "31...40");
-        input.put("income", "low");
-        input.put("student", "no");
-        input.put("credit_rating", "fair");
+        //naivebayes.csv
+//        input.put("age", "31...40");
+//        input.put("income", "low");
+//        input.put("student", "no");
+//        input.put("credit_rating", "fair");
+
+        //iris.csv
+        input.put("SepalLength", "7");
+//        input.put("SepalWidth", "3.5");
+//        input.put("PetalLength", "5.3");
+//        input.put("PetalWidth", "0.2");
 
         calc.belong(input);
     }
