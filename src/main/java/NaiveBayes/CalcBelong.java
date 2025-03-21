@@ -127,7 +127,7 @@ public class CalcBelong {
         Map<String, Map<String, Integer>> column = this.metadata.get(feature);
 
         System.out.println("CALC FEATURE PROB");
-        System.out.println("Column.get(value) : " + column.get(value));
+        System.out.println("Column.get(value).get(label) : " + column.get(value).get(label));
         System.out.println("Label Value: " + labelValue);
         System.out.println("Column.size() : " + column.size());
 
