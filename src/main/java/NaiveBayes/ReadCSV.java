@@ -9,15 +9,15 @@ import java.util.*;
 
 public class ReadCSV {
     /* Untuk menyimpan jumlah dari setiap bentuk isian untuk setiap column */
-    private Map<String, Map<String, Map<String, Integer>>> metadata;
+    private LinkedHashMap<String, Map<String, Map<String, Integer>>> metadata;
     private List<String> header;
 
     public ReadCSV() {
-        this.metadata = new HashMap<String, Map<String, Map<String, Integer>>>();
+        this.metadata = new LinkedHashMap<String, Map<String, Map<String, Integer>>>();
         this.header = new LinkedList<>();
     }
 
-    public void readCSVFile(String fileName) {
+    public void readCSVFile(String fileName, String feature) {
 //        InputStream inputStream = ReadCSV.class.getClassLoader().getResourceAsStream(fileName);
 //        String filePath = ReadCSV.class.getClassLoader().getResource(fileName).getPath();
 //        System.out.println("File path: " + filePath);
@@ -40,6 +40,8 @@ public class ReadCSV {
 
             System.out.println("HEADER: " + header);
 
+            int index = header.indexOf(feature);
+
             //Setiap baris
             while ((line = br.readLine()) != null) {
                 values = line.split("[,; ]+");
@@ -55,7 +57,7 @@ public class ReadCSV {
                     Map<String, Integer> label = new HashMap<>();
                     //Belum ada value dari column
                     if (!column.containsKey(value)) {
-                        label.put(values[values.length - 1], 1);
+                        label.put(values[index], 1);
 
                         column.put(value, label);
                     //Sudah ada value
@@ -63,10 +65,10 @@ public class ReadCSV {
                         System.out.println("Value : " + value);
                         label = column.get(value);
 
-                        if (label.containsKey(values[values.length - 1])) {
+                        if (label.containsKey(values[index])) {
                             System.out.println("Prev Label : " + label);
-                            System.out.println("Class Label : " + values[values.length - 1]);
-                            label.put(values[values.length - 1], label.get(values[values.length - 1]) + 1);
+                            System.out.println("Class Label : " + values[index]);
+                            label.put(values[index], label.get(values[index]) + 1);
                             column.put(value, label);
                         } else {
                             label.put(values[values.length - 1], 1);
@@ -88,7 +90,7 @@ public class ReadCSV {
         }
     }
 
-    public Map<String, Map<String, Map<String, Integer>>> getMetadata() {
+    public LinkedHashMap<String, Map<String, Map<String, Integer>>> getMetadata() {
         return this.metadata;
     }
 
