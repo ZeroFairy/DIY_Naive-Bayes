@@ -4,24 +4,23 @@
  */
 package NaiveBayes;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CalcBelong {
-    private Map<String, Map<String, Map<String, Integer>>> metadata;
+    private LinkedHashMap<String, Map<String, Map<String, Integer>>> metadata;
     private List<String> header;
+    private String feature;
 
-    public CalcBelong(String fileName) {
+    public CalcBelong(String fileName, String feature) {
         ReadCSV readCSV = new ReadCSV();
-        readCSV.readCSVFile(fileName);
+        readCSV.readCSVFile(fileName, feature);
+        this.feature = feature;
         this.metadata = readCSV.getMetadata();
         this.header = readCSV.getHeader();
     }
 
     public void belong(Map<String, String> input) {
-        Map<String, Map<String, Integer>> classColumn = this.metadata.get(this.header.getLast());
+        Map<String, Map<String, Integer>> classColumn = this.metadata.get(feature);
         Map<String, List<Double>> probResult = this.calcAllFeature(input);
         Map<String, Double> labelResult = new HashMap<>();
 
@@ -137,5 +136,9 @@ public class CalcBelong {
         System.out.println("PROBABILITY : " + result);
 
         return result;
+    }
+
+    public List<String> getHeader() {
+        return header;
     }
 }
