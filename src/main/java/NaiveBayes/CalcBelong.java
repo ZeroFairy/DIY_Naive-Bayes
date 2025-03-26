@@ -34,26 +34,18 @@ public class CalcBelong {
         Map<String, Double> labelResult = new HashMap<>();
 
         System.out.println("\nBELONGING");
-//        System.out.println("Prob Result : " + probResult);
 
         int totalLine = this.countTotalLine(classColumn);
-//        System.out.println("Total Line : " + totalLine);
 
         int counter = 0;
         for (Map.Entry<String, Map<String, Integer>> classLabel : classColumn.entrySet()) {
             for (Map.Entry<String, Integer> label : classLabel.getValue().entrySet()) {
                 double result = 1;
                 for (Map.Entry<String, List<Double>> prob : probResult.entrySet()) {
-//                    System.out.println("\nProb get value : " + prob.getValue().get(counter));
 
                     //P(X|Ci)
                     result *= (double) prob.getValue().get(counter);
                 }
-//                System.out.println("Label Key : " + label.getKey());
-//                System.out.println("Class Label Key : " + classLabel.getKey());
-//                System.out.println("Result : " + result);
-//                System.out.println("Label Value : " + label.getValue());
-
                 System.out.println("CLASS " + classLabel.getKey() + " --> P(X|Ci) : " + result);
 
                 //P(X|Ci) * P(Ci)
@@ -100,7 +92,7 @@ public class CalcBelong {
      * @param input --> Map of feature and value, from the search
      */
     public Map<String, List<Double>> calcAllFeature(Map<String, String> input) {
-        //Map<feature, hasil per label>
+        //Map<feature, probability of each label>
         Map<String, List<Double>> probResult = new HashMap<>();
 
         for (Map.Entry<String, String> entry : input.entrySet()) {
@@ -108,8 +100,6 @@ public class CalcBelong {
 
             probResult.put(entry.getKey(), featProb);
         }
-
-//        System.out.println("Prob Result: " + probResult);
         return probResult;
     }
 
@@ -127,8 +117,6 @@ public class CalcBelong {
         System.out.println("\nFeature " + feature);
         for (Map.Entry<String, Map<String, Integer>> classLabel : classColumn.entrySet()) {
             for (Map.Entry<String, Integer> label : classLabel.getValue().entrySet()) {
-//                System.out.println("\nEach label " + feature + " --> " + value + " : " + label.getKey() + " || " + label.getValue());
-
                 result.add(this.calcFeatureProb(feature, value, label.getKey(), label.getValue()));
             }
         }
@@ -136,7 +124,6 @@ public class CalcBelong {
         return result;
     }
 
-    //untuk 1 class label
     /**
      * Calculate probability of label against the feature
      *
@@ -147,12 +134,11 @@ public class CalcBelong {
     public double calcFeatureProb(String feature, String value, String label ,int labelValue) {
         Map<String, Map<String, Integer>> column = this.metadata.get(feature);
 
-//        System.out.println("CALC FEATURE PROB");
-//        System.out.println("Column.get(value).get(label) : " + column.get(value).get(label));
-//        System.out.println("Label Value: " + labelValue);
-//        System.out.println("Column.size() : " + column.size());
-
-        //column + 1 / jumlah label + jumlah value di column
+        /**
+         * number of label feature that are in the same row with (param label) label + 1
+         * (divide) /
+         * number of class feature (param label) label + number of each kind of label in feature
+         */
         double result = (double) ((column.get(value).get(label) == null ? 0 : column.get(value).get(label)) + 1) / (labelValue + column.size());
 
         System.out.println("PROBABILITY OF " + value + " --> " + label + " ARE : " + result);

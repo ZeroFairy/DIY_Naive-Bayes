@@ -44,9 +44,6 @@ public class ReadCSV {
                     header.add(value);
                 }
             }
-
-//            System.out.println("HEADER: " + header);
-
             int index = header.indexOf(feature);
 
             //Each line
@@ -56,7 +53,6 @@ public class ReadCSV {
 
                 //each column
                 for (String value : values) {
-//                    System.out.println("\nMETADATA READ CSV " + counter + " : " + this.metadata);
                     Map<String, Map<String, Integer>> column = this.metadata.get(header.get(counter));
 
                     Map<String, Integer> label = new HashMap<>();
@@ -67,12 +63,9 @@ public class ReadCSV {
                         column.put(value, label);
                     //Already got the label of the column
                     } else {
-//                        System.out.println("Value : " + value);
                         label = column.get(value);
 
                         if (label.containsKey(values[index])) {
-//                            System.out.println("Prev Label : " + label);
-//                            System.out.println("Class Label : " + values[index]);
                             label.put(values[index], label.get(values[index]) + 1);
                             column.put(value, label);
                         } else {
@@ -81,14 +74,9 @@ public class ReadCSV {
                     }
 
                     this.metadata.put(header.get(counter), column);
-//                    System.out.println("OUT METADATA READ CSV " + counter + " : " + this.metadata);
-
                     counter-=-1;    //counter++
                 }
             }
-
-//            System.out.println("Read CSV");
-//            System.out.println("METADATA" +this.metadata);
         } catch (IOException e) {
             e.printStackTrace();
         }
